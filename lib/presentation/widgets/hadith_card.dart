@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hadith/core/utils/text_utils.dart';
 import 'package:hadith/domain/entities/hadith_entity.dart';
-import 'package:hadith/presentation/widgets/hadith_bottom_sheet.dart';
 
 class HadithCard extends StatelessWidget {
   final HadithEntity hadith;
@@ -15,116 +13,127 @@ class HadithCard extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
+    return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          // Hadith header
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.teal,
-              child: Text(
-                bookName.substring(0, 1),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            title: Text(
-              'Hadith No: ${hadith.hadithId.toString().padLeft(2, '0')}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            subtitle: Text(bookName),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: ColorUtils.getHadithGradeColor(hadith.grade!),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    hadith.grade!,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                SizedBox(width: 8),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Hadith header
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.teal,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      'Hadith ${hadith.hadithId ?? hadith.id.toString()}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                      builder: (context) => HadithBottomSheet(),
-                    );
-                  },
-                  child: Icon(Icons.more_vert),
-                ),
-              ],
-            ),
-          ),
-          
-          // Arabic content
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              hadith.ar!,
-              textAlign: TextAlign.right,
-              textDirection: TextDirection.rtl,
-              style: TextStyle(
-                fontFamily: 'Arabic',
-                fontSize: 22,
-                height: 1.5,
+                    ),
+                  ),
+                  Spacer(),
+                  Icon(Icons.bookmark_border, color: Colors.grey),
+                  SizedBox(width: 8),
+                  Icon(Icons.share, color: Colors.grey),
+                ],
               ),
-            ),
-          ),
-          
-          // Narration info
-          if (hadith.narrator!.isNotEmpty)
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'It is narrated from ${hadith.narrator} (may Allaah have mercy on him):',
+              SizedBox(height: 16),
+              
+              // Narrator section if available
+              if (hadith.narrator != null && hadith.narrator!.isNotEmpty)
+                Text(
+                  hadith.narrator!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Colors.black87,
+                  ),
+                ),
+              
+              SizedBox(height: 12),
+              
+              // Arabic text
+              if (hadith.ar != null && hadith.ar!.isNotEmpty)
+                Text(
+                  hadith.ar!,
+                  style: TextStyle(
+                    fontFamily: 'Arabic',
+                    fontSize: 18,
+                    height: 1.5,
+                  ),
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.right,
+                ),
+              
+              SizedBox(height: 16),
+              
+              // Bengali translation
+              if (hadith.bn != null && hadith.bn!.isNotEmpty)
+                Text(
+                  hadith.bn!,
+                  style: TextStyle(
+                    fontSize: 15,
+                    height: 1.5,
+                    color: Colors.black87,
+                  ),
+                ),
+              
+              SizedBox(height: 12),
+              
+              // Grade section if available
+              if (hadith.grade != null && hadith.grade!.isNotEmpty)
+                Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Grade: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        hadith.grade!,
+                        style: TextStyle(
+                          color: hadith.gradeColor != null && hadith.gradeColor!.isNotEmpty
+                              ? Color(int.parse('FF${hadith.gradeColor!.substring(1)}', radix: 16))
+                              : Colors.teal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              
+              SizedBox(height: 12),
+              
+              // Book reference
+              Text(
+                'Reference: $bookName ${hadith.hadithId ?? hadith.id.toString()}',
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.teal,
+                  fontSize: 13,
+                  color: Colors.grey[600],
                 ),
               ),
-            ),
-          
-          // English content
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(
-              hadith.bn!,
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-              ),
-            ),
+            ],
           ),
-          
-          // Reference footnote
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              '(See also 51, 2681, 2804, 2941, 2978, 3174, 4553, 5980, 6260, 7196, 7541) (Modern Publication: 6, Islamic Foundation: 6)',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black45,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

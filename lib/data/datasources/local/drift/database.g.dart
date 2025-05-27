@@ -89,11 +89,11 @@ class $BooksTable extends Books with TableInfo<$BooksTable, Book> {
     'colorCode',
   );
   @override
-  late final GeneratedColumn<int> colorCode = GeneratedColumn<int>(
+  late final GeneratedColumn<String> colorCode = GeneratedColumn<String>(
     'color_code',
     aliasedName,
     true,
-    type: DriftSqlType.int,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
   @override
@@ -206,7 +206,7 @@ class $BooksTable extends Books with TableInfo<$BooksTable, Book> {
         data['${effectivePrefix}book_descr'],
       ),
       colorCode: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
+        DriftSqlType.string,
         data['${effectivePrefix}color_code'],
       ),
     );
@@ -226,7 +226,7 @@ class Book extends DataClass implements Insertable<Book> {
   final String? abvrCode;
   final String? bookName;
   final String? bookDescr;
-  final int? colorCode;
+  final String? colorCode;
   const Book({
     required this.id,
     this.title,
@@ -260,7 +260,7 @@ class Book extends DataClass implements Insertable<Book> {
       map['book_descr'] = Variable<String>(bookDescr);
     }
     if (!nullToAbsent || colorCode != null) {
-      map['color_code'] = Variable<int>(colorCode);
+      map['color_code'] = Variable<String>(colorCode);
     }
     return map;
   }
@@ -310,7 +310,7 @@ class Book extends DataClass implements Insertable<Book> {
       abvrCode: serializer.fromJson<String?>(json['abvrCode']),
       bookName: serializer.fromJson<String?>(json['bookName']),
       bookDescr: serializer.fromJson<String?>(json['bookDescr']),
-      colorCode: serializer.fromJson<int?>(json['colorCode']),
+      colorCode: serializer.fromJson<String?>(json['colorCode']),
     );
   }
   @override
@@ -324,7 +324,7 @@ class Book extends DataClass implements Insertable<Book> {
       'abvrCode': serializer.toJson<String?>(abvrCode),
       'bookName': serializer.toJson<String?>(bookName),
       'bookDescr': serializer.toJson<String?>(bookDescr),
-      'colorCode': serializer.toJson<int?>(colorCode),
+      'colorCode': serializer.toJson<String?>(colorCode),
     };
   }
 
@@ -336,7 +336,7 @@ class Book extends DataClass implements Insertable<Book> {
     Value<String?> abvrCode = const Value.absent(),
     Value<String?> bookName = const Value.absent(),
     Value<String?> bookDescr = const Value.absent(),
-    Value<int?> colorCode = const Value.absent(),
+    Value<String?> colorCode = const Value.absent(),
   }) => Book(
     id: id ?? this.id,
     title: title.present ? title.value : this.title,
@@ -412,7 +412,7 @@ class BooksCompanion extends UpdateCompanion<Book> {
   final Value<String?> abvrCode;
   final Value<String?> bookName;
   final Value<String?> bookDescr;
-  final Value<int?> colorCode;
+  final Value<String?> colorCode;
   const BooksCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -441,7 +441,7 @@ class BooksCompanion extends UpdateCompanion<Book> {
     Expression<String>? abvrCode,
     Expression<String>? bookName,
     Expression<String>? bookDescr,
-    Expression<int>? colorCode,
+    Expression<String>? colorCode,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -463,7 +463,7 @@ class BooksCompanion extends UpdateCompanion<Book> {
     Value<String?>? abvrCode,
     Value<String?>? bookName,
     Value<String?>? bookDescr,
-    Value<int?>? colorCode,
+    Value<String?>? colorCode,
   }) {
     return BooksCompanion(
       id: id ?? this.id,
@@ -502,7 +502,7 @@ class BooksCompanion extends UpdateCompanion<Book> {
       map['book_descr'] = Variable<String>(bookDescr.value);
     }
     if (colorCode.present) {
-      map['color_code'] = Variable<int>(colorCode.value);
+      map['color_code'] = Variable<String>(colorCode.value);
     }
     return map;
   }
@@ -1046,11 +1046,11 @@ class $HadithsTable extends Hadiths with TableInfo<$HadithsTable, Hadith> {
     'hadithId',
   );
   @override
-  late final GeneratedColumn<String> hadithId = GeneratedColumn<String>(
+  late final GeneratedColumn<int> hadithId = GeneratedColumn<int>(
     'hadith_id',
     aliasedName,
     true,
-    type: DriftSqlType.string,
+    type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _narratorMeta = const VerificationMeta(
@@ -1285,7 +1285,7 @@ class $HadithsTable extends Hadiths with TableInfo<$HadithsTable, Hadith> {
         data['${effectivePrefix}hadith_key'],
       ),
       hadithId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
+        DriftSqlType.int,
         data['${effectivePrefix}hadith_id'],
       ),
       narrator: attachedDatabase.typeMapping.read(
@@ -1336,7 +1336,7 @@ class Hadith extends DataClass implements Insertable<Hadith> {
   final int chapterId;
   final int? sectionId;
   final String? hadithKey;
-  final String? hadithId;
+  final int? hadithId;
   final String? narrator;
   final String? bn;
   final String? ar;
@@ -1378,7 +1378,7 @@ class Hadith extends DataClass implements Insertable<Hadith> {
       map['hadith_key'] = Variable<String>(hadithKey);
     }
     if (!nullToAbsent || hadithId != null) {
-      map['hadith_id'] = Variable<String>(hadithId);
+      map['hadith_id'] = Variable<int>(hadithId);
     }
     if (!nullToAbsent || narrator != null) {
       map['narrator'] = Variable<String>(narrator);
@@ -1464,7 +1464,7 @@ class Hadith extends DataClass implements Insertable<Hadith> {
       chapterId: serializer.fromJson<int>(json['chapterId']),
       sectionId: serializer.fromJson<int?>(json['sectionId']),
       hadithKey: serializer.fromJson<String?>(json['hadithKey']),
-      hadithId: serializer.fromJson<String?>(json['hadithId']),
+      hadithId: serializer.fromJson<int?>(json['hadithId']),
       narrator: serializer.fromJson<String?>(json['narrator']),
       bn: serializer.fromJson<String?>(json['bn']),
       ar: serializer.fromJson<String?>(json['ar']),
@@ -1485,7 +1485,7 @@ class Hadith extends DataClass implements Insertable<Hadith> {
       'chapterId': serializer.toJson<int>(chapterId),
       'sectionId': serializer.toJson<int?>(sectionId),
       'hadithKey': serializer.toJson<String?>(hadithKey),
-      'hadithId': serializer.toJson<String?>(hadithId),
+      'hadithId': serializer.toJson<int?>(hadithId),
       'narrator': serializer.toJson<String?>(narrator),
       'bn': serializer.toJson<String?>(bn),
       'ar': serializer.toJson<String?>(ar),
@@ -1504,7 +1504,7 @@ class Hadith extends DataClass implements Insertable<Hadith> {
     int? chapterId,
     Value<int?> sectionId = const Value.absent(),
     Value<String?> hadithKey = const Value.absent(),
-    Value<String?> hadithId = const Value.absent(),
+    Value<int?> hadithId = const Value.absent(),
     Value<String?> narrator = const Value.absent(),
     Value<String?> bn = const Value.absent(),
     Value<String?> ar = const Value.absent(),
@@ -1620,7 +1620,7 @@ class HadithsCompanion extends UpdateCompanion<Hadith> {
   final Value<int> chapterId;
   final Value<int?> sectionId;
   final Value<String?> hadithKey;
-  final Value<String?> hadithId;
+  final Value<int?> hadithId;
   final Value<String?> narrator;
   final Value<String?> bn;
   final Value<String?> ar;
@@ -1671,7 +1671,7 @@ class HadithsCompanion extends UpdateCompanion<Hadith> {
     Expression<int>? chapterId,
     Expression<int>? sectionId,
     Expression<String>? hadithKey,
-    Expression<String>? hadithId,
+    Expression<int>? hadithId,
     Expression<String>? narrator,
     Expression<String>? bn,
     Expression<String>? ar,
@@ -1707,7 +1707,7 @@ class HadithsCompanion extends UpdateCompanion<Hadith> {
     Value<int>? chapterId,
     Value<int?>? sectionId,
     Value<String?>? hadithKey,
-    Value<String?>? hadithId,
+    Value<int?>? hadithId,
     Value<String?>? narrator,
     Value<String?>? bn,
     Value<String?>? ar,
@@ -1758,7 +1758,7 @@ class HadithsCompanion extends UpdateCompanion<Hadith> {
       map['hadith_key'] = Variable<String>(hadithKey.value);
     }
     if (hadithId.present) {
-      map['hadith_id'] = Variable<String>(hadithId.value);
+      map['hadith_id'] = Variable<int>(hadithId.value);
     }
     if (narrator.present) {
       map['narrator'] = Variable<String>(narrator.value);
@@ -1836,7 +1836,7 @@ typedef $$BooksTableCreateCompanionBuilder =
       Value<String?> abvrCode,
       Value<String?> bookName,
       Value<String?> bookDescr,
-      Value<int?> colorCode,
+      Value<String?> colorCode,
     });
 typedef $$BooksTableUpdateCompanionBuilder =
     BooksCompanion Function({
@@ -1847,7 +1847,7 @@ typedef $$BooksTableUpdateCompanionBuilder =
       Value<String?> abvrCode,
       Value<String?> bookName,
       Value<String?> bookDescr,
-      Value<int?> colorCode,
+      Value<String?> colorCode,
     });
 
 class $$BooksTableFilterComposer extends Composer<_$AppDatabase, $BooksTable> {
@@ -1893,7 +1893,7 @@ class $$BooksTableFilterComposer extends Composer<_$AppDatabase, $BooksTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get colorCode => $composableBuilder(
+  ColumnFilters<String> get colorCode => $composableBuilder(
     column: $table.colorCode,
     builder: (column) => ColumnFilters(column),
   );
@@ -1943,7 +1943,7 @@ class $$BooksTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get colorCode => $composableBuilder(
+  ColumnOrderings<String> get colorCode => $composableBuilder(
     column: $table.colorCode,
     builder: (column) => ColumnOrderings(column),
   );
@@ -1981,7 +1981,7 @@ class $$BooksTableAnnotationComposer
   GeneratedColumn<String> get bookDescr =>
       $composableBuilder(column: $table.bookDescr, builder: (column) => column);
 
-  GeneratedColumn<int> get colorCode =>
+  GeneratedColumn<String> get colorCode =>
       $composableBuilder(column: $table.colorCode, builder: (column) => column);
 }
 
@@ -2020,7 +2020,7 @@ class $$BooksTableTableManager
                 Value<String?> abvrCode = const Value.absent(),
                 Value<String?> bookName = const Value.absent(),
                 Value<String?> bookDescr = const Value.absent(),
-                Value<int?> colorCode = const Value.absent(),
+                Value<String?> colorCode = const Value.absent(),
               }) => BooksCompanion(
                 id: id,
                 title: title,
@@ -2040,7 +2040,7 @@ class $$BooksTableTableManager
                 Value<String?> abvrCode = const Value.absent(),
                 Value<String?> bookName = const Value.absent(),
                 Value<String?> bookDescr = const Value.absent(),
-                Value<int?> colorCode = const Value.absent(),
+                Value<String?> colorCode = const Value.absent(),
               }) => BooksCompanion.insert(
                 id: id,
                 title: title,
@@ -2323,7 +2323,7 @@ typedef $$HadithsTableCreateCompanionBuilder =
       required int chapterId,
       Value<int?> sectionId,
       Value<String?> hadithKey,
-      Value<String?> hadithId,
+      Value<int?> hadithId,
       Value<String?> narrator,
       Value<String?> bn,
       Value<String?> ar,
@@ -2341,7 +2341,7 @@ typedef $$HadithsTableUpdateCompanionBuilder =
       Value<int> chapterId,
       Value<int?> sectionId,
       Value<String?> hadithKey,
-      Value<String?> hadithId,
+      Value<int?> hadithId,
       Value<String?> narrator,
       Value<String?> bn,
       Value<String?> ar,
@@ -2391,7 +2391,7 @@ class $$HadithsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get hadithId => $composableBuilder(
+  ColumnFilters<int> get hadithId => $composableBuilder(
     column: $table.hadithId,
     builder: (column) => ColumnFilters(column),
   );
@@ -2476,7 +2476,7 @@ class $$HadithsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get hadithId => $composableBuilder(
+  ColumnOrderings<int> get hadithId => $composableBuilder(
     column: $table.hadithId,
     builder: (column) => ColumnOrderings(column),
   );
@@ -2549,7 +2549,7 @@ class $$HadithsTableAnnotationComposer
   GeneratedColumn<String> get hadithKey =>
       $composableBuilder(column: $table.hadithKey, builder: (column) => column);
 
-  GeneratedColumn<String> get hadithId =>
+  GeneratedColumn<int> get hadithId =>
       $composableBuilder(column: $table.hadithId, builder: (column) => column);
 
   GeneratedColumn<String> get narrator =>
@@ -2615,7 +2615,7 @@ class $$HadithsTableTableManager
                 Value<int> chapterId = const Value.absent(),
                 Value<int?> sectionId = const Value.absent(),
                 Value<String?> hadithKey = const Value.absent(),
-                Value<String?> hadithId = const Value.absent(),
+                Value<int?> hadithId = const Value.absent(),
                 Value<String?> narrator = const Value.absent(),
                 Value<String?> bn = const Value.absent(),
                 Value<String?> ar = const Value.absent(),
@@ -2649,7 +2649,7 @@ class $$HadithsTableTableManager
                 required int chapterId,
                 Value<int?> sectionId = const Value.absent(),
                 Value<String?> hadithKey = const Value.absent(),
-                Value<String?> hadithId = const Value.absent(),
+                Value<int?> hadithId = const Value.absent(),
                 Value<String?> narrator = const Value.absent(),
                 Value<String?> bn = const Value.absent(),
                 Value<String?> ar = const Value.absent(),

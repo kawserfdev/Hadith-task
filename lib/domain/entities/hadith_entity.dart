@@ -7,7 +7,7 @@ class HadithEntity {
   final int chapterId;
   final int? sectionId;
   final String? hadithKey;
-  final String? hadithId;
+  final int? hadithId;
   final String? narrator;
   final String? bn;           // Bengali translation?
   final String? ar;           // Arabic text
@@ -24,7 +24,7 @@ class HadithEntity {
     required this.chapterId,
     this.sectionId = 0,
     this.hadithKey = '',
-    this.hadithId = '',
+    this.hadithId = 0,
     this.narrator = '',
     this.bn = '',
     this.ar = '',
@@ -43,7 +43,7 @@ class HadithEntity {
       chapterId: data['chapter_id'] as int,
       sectionId: data['section_id'] as int? ?? 0,
       hadithKey: data['hadith_key'] as String? ?? '',
-      hadithId: data['hadith_id'] as String? ?? '',
+      hadithId: data['hadith_id'] as int? ?? 0,
       narrator: data['narrator'] as String? ?? '',
       bn: data['bn'] as String? ?? '',
       ar: data['ar'] as String? ?? '',
@@ -64,7 +64,7 @@ class Hadiths extends Table {
   IntColumn get chapterId => integer().named('chapter_id')();
   IntColumn get sectionId => integer().named('section_id').nullable()();
   TextColumn get hadithKey => text().named('hadith_key').nullable()();
-  TextColumn get hadithId => text().named('hadith_id').nullable()();
+  IntColumn get hadithId => integer().named('hadith_id').nullable()();  // Changed to IntColumn
   TextColumn get narrator => text().nullable()();
   TextColumn get bn => text().nullable()();
   TextColumn get ar => text().nullable()();

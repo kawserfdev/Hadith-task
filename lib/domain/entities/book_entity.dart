@@ -1,6 +1,7 @@
 
 
-import 'package:drift/drift.dart';
+
+import 'package:flutter/material.dart';
 
 class BookEntity {
   final int id;
@@ -10,7 +11,7 @@ class BookEntity {
   final String? abvrCode;
   final String? bookName;
   final String? bookDescr;
-  final int? colorCode;
+  final String? colorCode;  
   
   BookEntity({
     required this.id,
@@ -20,7 +21,7 @@ class BookEntity {
     this.abvrCode = '',
     this.bookName = '',
     this.bookDescr = '',
-    this.colorCode = 0,
+    this.colorCode = '',  
   });
   
   factory BookEntity.fromDb(Map<String, dynamic> data) {
@@ -32,19 +33,20 @@ class BookEntity {
       abvrCode: data['abvr_code'] as String? ?? '',
       bookName: data['book_name'] as String? ?? '',
       bookDescr: data['book_descr'] as String? ?? '',
-      colorCode: data['color_code'] as int? ?? 0,
+      colorCode: data['color_code']?.toString() ?? '',  // Convert to String
     );
+  }
+  
+  // Helper method to convert hex color to Color
+  Color get color {
+    try {
+      if (colorCode == null || colorCode!.isEmpty) return Colors.teal;
+      if (!colorCode!.startsWith('#')) return Colors.teal;
+      
+      return Color(int.parse('FF${colorCode!.substring(1)}', radix: 16));
+    } catch (e) {
+      return Colors.teal; // Default color
+    }
   }
 }
 
-
-class Books extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().nullable()();
-  TextColumn get titleAr => text().named('title_ar').nullable()();
-  IntColumn get numberOfHadis => integer().named('number_of_hadis').nullable()();
-  TextColumn get abvrCode => text().named('abvr_code').nullable()();
-  TextColumn get bookName => text().named('book_name').nullable()();
-  TextColumn get bookDescr => text().named('book_descr').nullable()();
-  IntColumn get colorCode => integer().named('color_code').nullable()();
-}

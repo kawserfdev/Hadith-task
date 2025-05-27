@@ -55,3 +55,47 @@ class BookController extends GetxController {
     }
   }
 }
+
+
+
+
+
+// import 'package:get/get.dart';
+// import 'package:hadith/domain/entities/book_entity.dart';
+// import 'package:hadith/domain/repositories/hadith_repository.dart';
+
+// class BookController extends GetxController {
+//   final HadithRepository repository;
+  
+//   BookController({required this.repository});
+  
+//   final RxList<BookEntity> books = <BookEntity>[].obs;
+//   final RxBool isLoading = false.obs;
+//   final RxString errorMessage = ''.obs;
+  
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     fetchBooks();
+//   }
+  
+//   Future<void> fetchBooks() async {
+//     try {
+//       isLoading(true);
+//       errorMessage('');
+//       books.value = await repository.getAllBooks();
+//     } catch (e) {
+//       errorMessage('Failed to load books');
+//     } finally {
+//       isLoading(false);
+//     }
+//   }
+  
+//   BookEntity? getBookById(int bookId) {
+//     try {
+//       return books.firstWhereOrNull((book) => book.id == bookId);
+//     } catch (e) {
+//       return null;
+//     }
+//   }
+// }
