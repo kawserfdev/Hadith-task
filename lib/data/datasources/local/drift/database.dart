@@ -322,120 +322,193 @@ int? _safeIntParse(dynamic value) {
 //   }
 // }
 
-  Future<List<Hadith>> getHadithsByChapterId(int chapterId) async {
-  try {
-    print('📚 Repository: in getHadithsByChapterId Getting hadiths for chapter $chapterId...');
+//   Future<List<Hadith>> getHadithsByChapterId(int chapterId) async {
+//   try {
+//     print('📚 Repository: in getHadithsByChapterId Getting hadiths for chapter $chapterId...');
     
-    final chapterCheck = await customSelect(
-      'SELECT COUNT(*) AS count FROM chapter WHERE id = ?',
-      variables: [Variable.withInt(chapterId)]
-    ).getSingleOrNull();
+//     final chapterCheck = await customSelect(
+//       'SELECT COUNT(*) AS count FROM chapter WHERE id = ?',
+//       variables: [Variable.withInt(chapterId)]
+//     ).getSingleOrNull();
+//     print('📊 Chapter check returned ${chapterCheck?.data['count']}');
 
-    print('📊 Chapter check returned ${chapterCheck?.data['count']}');
+//     print('📊 Chapter check returned ${chapterCheck?.data['count']}');
     
-    final chapterCount = chapterCheck?.data['count'] as int? ?? 0;
-    if (chapterCount == 0) {
-      print('⚠️ Chapter with ID $chapterId does not exist in chapters table');
-    } else {
-      print('Chapter with ID $chapterId exists, fetching hadiths...');
-    }
+//     final chapterCount = chapterCheck?.data['count'] as int? ?? 0;
+//     if (chapterCount == 0) {
+//       print('⚠️ Chapter with ID $chapterId does not exist in chapters table');
+//     } else {
+//       print('Chapter with ID $chapterId exists, fetching hadiths...');
+//     }
     
-    final hadithsSchema = await customSelect('PRAGMA table_info(hadith)').get();
+//     final hadithsSchema = await customSelect('PRAGMA table_info(hadith)').get();
     
-    for (final col in hadithsSchema) {
-      print('   - ${col.data['name']} (${col.data['type']})');
-    }
+//     for (final col in hadithsSchema) {
+//       print('   - ${col.data['name']} (${col.data['type']})');
+//     }
     
-    final hasChapterIdColumn = hadithsSchema.any((col) => 
-      col.data['name'].toString().toLowerCase() == 'chapter_id');
+//     final hasChapterIdColumn = hadithsSchema.any((col) => 
+//       col.data['name'].toString().toLowerCase() == 'chapter_id');
     
-    if (!hasChapterIdColumn) {
+//     if (!hasChapterIdColumn) {
       
-      final possibleChapterColumns = hadithsSchema
-          .where((col) => col.data['name'].toString().toLowerCase().contains('chapter'))
-          .map((col) => col.data['name'].toString())
-          .toList();      
-      if (possibleChapterColumns.isEmpty) {
-        return [];
-      }
-    }
+//       final possibleChapterColumns = hadithsSchema
+//           .where((col) => col.data['name'].toString().toLowerCase().contains('chapter'))
+//           .map((col) => col.data['name'].toString())
+//           .toList();      
+//       if (possibleChapterColumns.isEmpty) {
+//         return [];
+//       }
+//     }
     
-    final sampleRows = await customSelect('SELECT * FROM hadith LIMIT 5').get();
+//     final sampleRows = await customSelect('SELECT * FROM hadith LIMIT 5').get();
     
-    for (final row in sampleRows) {
-      print('   - ${row.data}');
-    }
+//     for (final row in sampleRows) {
+//       print('   - ${row.data}');
+//     }
     
-    try {
-      final results = await customSelect(
-        'SELECT * FROM hadith WHERE chapter_id = ?',
-        variables: [Variable.withInt(chapterId)]
-      ).get();
+//     try {
+//       final results = await customSelect(
+//         'SELECT * FROM hadith WHERE chapter_id = ?',
+//         variables: [Variable.withInt(chapterId)]
+//       ).get();
       
       
-      if (results.isEmpty) {
+//       if (results.isEmpty) {
         
-        final totalHadiths = await customSelect('SELECT COUNT(*) AS count FROM hadith').getSingleOrNull();
-        final hadithCount = totalHadiths?.data['count'] as int? ?? 0;
+//         final totalHadiths = await customSelect('SELECT COUNT(*) AS count FROM hadith').getSingleOrNull();
+//         final hadithCount = totalHadiths?.data['count'] as int? ?? 0;
         
-        if (hadithCount == 0) {
-          print(' Warning: hadiths table appears to be empty!');
-        }
+//         if (hadithCount == 0) {
+//           print(' Warning: hadiths table appears to be empty!');
+//         }
         
-        return [];
-      }
+//         return [];
+//       }
       
-      return results.map((row) {
-        try {
-          return Hadith(
-            id: row.data['id'] as int? ?? 0,
-            bookId: row.data['book_id'] as int? ?? 0,
-            bookName: row.data['book_name'] as String?,
-            chapterId: row.data['chapter_id'] as int? ?? 0,
-            sectionId: row.data['section_id'] as int?,
-            hadithKey: row.data['hadith_key'] as String?,
-            hadithId: row.data['hadith_id'] as int?,
-            narrator: row.data['narrator'] as String?,
-            bn: row.data['bn'] as String?,
-            ar: row.data['ar'] as String?,
-            arDiacless: row.data['ar_diacless'] as String?,
-            note: row.data['note'] as String?,
-            gradeId: row.data['grade_id'] as int?,
-            grade: row.data['grade'] as String?,
-            gradeColor: row.data['grade_color'] as String?,
-          );
-        } catch (e) {
-          print('❌ Error mapping hadith row: $e');
-          print('📊 Problematic row data: ${row.data}');
-          return Hadith(
-            id: 0, 
-            bookId: 0,
-            chapterId: chapterId, 
-          );
-        }
-      }).where((hadith) => hadith.id > 0).toList();
-    } catch (e, stack) {
-      print('❌ Error in standard query: $e');
-      print('📈 Stack trace: $stack');
+//       return results.map((row) {
+//         try {
+//           return Hadith(
+//             id: row.data['id'] as int? ?? 0,
+//             bookId: row.data['book_id'] as int? ?? 0,
+//             bookName: row.data['book_name'] as String?,
+//             chapterId: row.data['chapter_id'] as int? ?? 0,
+//             sectionId: row.data['section_id'] as int?,
+//             hadithKey: row.data['hadith_key'] as String?,
+//             hadithId: row.data['hadith_id'] as int?,
+//             narrator: row.data['narrator'] as String?,
+//             bn: row.data['bn'] as String?,
+//             ar: row.data['ar'] as String?,
+//             arDiacless: row.data['ar_diacless'] as String?,
+//             note: row.data['note'] as String?,
+//             gradeId: row.data['grade_id'] as int?,
+//             grade: row.data['grade'] as String?,
+//             gradeColor: row.data['grade_color'] as String?,
+//           );
+//         } catch (e) {
+//           print('❌ Error mapping hadith row: $e');
+//           print('📊 Problematic row data: ${row.data}');
+//           return Hadith(
+//             id: 0, 
+//             bookId: 0,
+//             chapterId: chapterId, 
+//           );
+//         }
+//       }).where((hadith) => hadith.id > 0).toList();
+//     } catch (e, stack) {
+//       print('❌ Error in standard query: $e');
+//       print('📈 Stack trace: $stack');
       
-      // Try a fallback using drift's query builder
+//       // Try a fallback using drift's query builder
+//       try {
+//         print('🔄 Trying Drift query builder as fallback...');
+//         final driftResults = await (select(hadiths)..where((h) => h.chapterId.equals(chapterId))).get();
+//         print('✅ Drift query returned ${driftResults.length} hadiths');
+//         return driftResults;
+//       } catch (e) {
+//         print('❌ Drift query also failed: $e');
+//         return [];
+//       }
+//     }
+//   } catch (e, stackTrace) {
+//     print('❌ Error in getHadithsByChapterId: $e');
+//     print('📈 Stack trace: $stackTrace');
+//     return [];
+//   }
+// }
+
+
+Future<List<Hadith>> getHadithsByChapterId(int chapterId) async {
+  try {
+    // Check table name first - important diagnostic step
+    print('📚 Database: getHadithsByChapterId called with chapterId=$chapterId');
+    final tableCheck = await customSelect(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('hadith', 'hadit')"
+    ).get();
+    
+    if (tableCheck.isEmpty) {
+      return [];
+    }
+    
+    print('   - Found tables: ${tableCheck.map((row) => row.data['name'] as String).toList().join(', ')}');
+    
+    if (tableCheck.length > 1) {
+      print('   - Warning: found multiple tables: ${tableCheck.map((row) => row.data['name'] as String).toList().join(', ')}'); 
+    }
+    
+    final tableNames = tableCheck.map((row) => row.data['name'] as String).toList();
+    
+    // Determine the correct table name
+    final tableName = tableNames.contains('hadith') ? 'hadith' : 'hadith';
+    
+    // Use the correct table name in the query
+    final results = await customSelect(
+      'SELECT * FROM $tableName WHERE chapter_id = ?',
+      variables: [Variable.withInt(chapterId)]
+    ).get();
+    
+    if (results.isEmpty) {
+      return [];
+    }
+    
+    // Print a sample result to verify correct chapter_id
+    if (results.isNotEmpty) {
+      final firstRow = results.first.data;
+      print('First result has chapter_id: ${firstRow['chapter_id']}');
+    }
+    
+    return results.map((row) {
       try {
-        print('🔄 Trying Drift query builder as fallback...');
-        final driftResults = await (select(hadiths)..where((h) => h.chapterId.equals(chapterId))).get();
-        print('✅ Drift query returned ${driftResults.length} hadiths');
-        return driftResults;
+        return Hadith(
+          id: row.data['id'] as int? ?? 0,
+          bookId: row.data['book_id'] as int? ?? 0,
+          bookName: row.data['book_name'] as String?,
+          chapterId: row.data['chapter_id'] as int? ?? 0,
+          sectionId: row.data['section_id'] as int?,
+          hadithKey: row.data['hadith_key'] as String?,
+          hadithId: row.data['hadith_id'] as int?,
+          narrator: row.data['narrator'] as String?,
+          bn: row.data['bn'] as String?,
+          ar: row.data['ar'] as String?,
+          arDiacless: row.data['ar_diacless'] as String?,
+          note: row.data['note'] as String?,
+          gradeId: row.data['grade_id'] as int?,
+          grade: row.data['grade'] as String?,
+          gradeColor: row.data['grade_color'] as String?,
+        );
       } catch (e) {
-        print('❌ Drift query also failed: $e');
-        return [];
+        return Hadith(id: 0, bookId: 0, chapterId: chapterId);
       }
+    }).where((hadith) => hadith.id > 0 && hadith.chapterId == chapterId).toList();
+  } catch (e) {
+    // Use drift's query builder as a reliable fallback
+    try {
+      return await (select(hadiths)..where((h) => h.chapterId.equals(chapterId))).get();
+    } catch (e) {
+      return [];
     }
-  } catch (e, stackTrace) {
-    print('❌ Error in getHadithsByChapterId: $e');
-    print('📈 Stack trace: $stackTrace');
-    return [];
   }
 }
-
 
 
   //  Future<Hadith?> getHadithById(int hadithId) async {
