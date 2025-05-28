@@ -4,28 +4,22 @@ import 'package:hadith/domain/entities/hadith_entity.dart';
 class HadithCard extends StatelessWidget {
   final HadithEntity hadith;
   final String bookName;
-  
-  const HadithCard({
-    Key? key,
-    required this.hadith,
-    required this.bookName,
-  }) : super(key: key);
-  
+
+  const HadithCard({Key? key, required this.hadith, required this.bookName})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Hadith header
               Row(
                 children: [
                   Container(
@@ -49,8 +43,7 @@ class HadithCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              
-              // Narrator section if available
+
               if (hadith.narrator != null && hadith.narrator!.isNotEmpty)
                 Text(
                   hadith.narrator!,
@@ -60,10 +53,9 @@ class HadithCard extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-              
+
               SizedBox(height: 12),
-              
-              // Arabic text
+
               if (hadith.ar != null && hadith.ar!.isNotEmpty)
                 Text(
                   hadith.ar!,
@@ -75,10 +67,9 @@ class HadithCard extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.right,
                 ),
-              
+
               SizedBox(height: 16),
-              
-              // Bengali translation
+
               if (hadith.bn != null && hadith.bn!.isNotEmpty)
                 Text(
                   hadith.bn!,
@@ -88,10 +79,9 @@ class HadithCard extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-              
+
               SizedBox(height: 12),
-              
-              // Grade section if available
+
               if (hadith.grade != null && hadith.grade!.isNotEmpty)
                 Container(
                   padding: EdgeInsets.all(8),
@@ -111,25 +101,28 @@ class HadithCard extends StatelessWidget {
                       Text(
                         hadith.grade!,
                         style: TextStyle(
-                          color: hadith.gradeColor != null && hadith.gradeColor!.isNotEmpty
-                              ? Color(int.parse('FF${hadith.gradeColor!.substring(1)}', radix: 16))
-                              : Colors.teal,
+                          color:
+                              hadith.gradeColor != null &&
+                                      hadith.gradeColor!.isNotEmpty
+                                  ? Color(
+                                    int.parse(
+                                      'FF${hadith.gradeColor!.substring(1)}',
+                                      radix: 16,
+                                    ),
+                                  )
+                                  : Colors.teal,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
-              
+
               SizedBox(height: 12),
-              
-              // Book reference
+
               Text(
                 'Reference: $bookName ${hadith.hadithId ?? hadith.id.toString()}',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 13, color: Colors.grey[600]),
               ),
             ],
           ),

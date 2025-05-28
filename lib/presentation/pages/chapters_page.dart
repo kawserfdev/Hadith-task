@@ -10,17 +10,31 @@ class ChaptersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookId = Get.arguments as int;
+    final dynamic arguments = Get.arguments;
+    int bookId;
+
+    if (arguments is Map<String, dynamic>) {
+      bookId = arguments['bookId'] as int;
+    } else if (arguments is int) {
+      bookId = arguments;
+    } else {
+      throw ArgumentError(
+        'Expected int or Map<String, dynamic> with bookId key',
+      );
+    }
+
     controller.setBookId(bookId);
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
         title: Obx(() {
-          // Safely find the book
           BookEntity? book;
           try {
             if (bookController.books.isNotEmpty) {
-              // Use firstWhereOrNull to avoid exceptions if book isn't found
               book = bookController.books.firstWhereOrNull(
                 (b) => b.id == bookId,
               );
@@ -29,10 +43,9 @@ class ChaptersPage extends StatelessWidget {
             print('Error finding book: $e');
           }
 
-          return Text('${book?.title ?? 'Chapters'} Chapters');
+          return Text(book?.title ?? 'Chapters');
         }),
         centerTitle: true,
-        backgroundColor: Colors.teal,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -47,11 +60,6 @@ class ChaptersPage extends StatelessWidget {
           itemCount: controller.chapters.length,
           itemBuilder: (context, index) {
             final chapter = controller.chapters[index];
-            final hadithCount =
-                chapter.hadisRange!
-                    .split('-')
-                    .last; 
-                    //! - chapter.hadithStartNumber! + 1;
 
             return Card(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -70,13 +78,13 @@ class ChaptersPage extends StatelessWidget {
                   children: [
                     SizedBox(height: 8),
                     Text(
-                      chapter.title!,
-                      style: TextStyle(fontFamily: 'Arabic', fontSize: 14),
+                      chapter.bookName!,
+                      style: TextStyle(fontSize: 14),
                       textDirection: TextDirection.rtl,
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "$hadithCount hadiths",
+                      "${chapter.hadisRange} hadiths",
                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                   ],

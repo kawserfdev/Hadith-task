@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   HadithRepository repository;
-  
+
   try {
     final database = AppDatabase();
     repository = HadithRepositoryImpl(database);
@@ -38,7 +38,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         fontFamily: 'Roboto',
-        appBarTheme: AppBarTheme(elevation: 0, centerTitle: true),
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.teal,
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

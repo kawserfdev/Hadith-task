@@ -23,36 +23,26 @@ class HadithPage extends StatelessWidget {
     controller.setChapterId(chapterId);
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.teal,
       appBar: AppBar(
         backgroundColor: Colors.teal,
         elevation: 0,
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text(bookName, style: TextStyle()),
             Text(
-              bookName,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              chapterTitle,
+              "Revelation",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
               overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
-        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info_outline),
-            onPressed: () => _showChapterInfo(context, chapterTitle),
-            tooltip: 'Chapter Information',
-          ),
-        ],
+
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -106,64 +96,79 @@ class HadithPage extends StatelessWidget {
           );
         }
 
-        return ListView(
-          padding: EdgeInsets.only(top: 16, bottom: 24),
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Card(
-                elevation: 2,
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 4,
+                offset: Offset(0, -2),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.fromLTRB(20, 0.0, 20, 16),
+          child: ListView(
+            padding: EdgeInsets.only(top: 16, bottom: 24),
+            children: [
+              Card(
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Chapter: $chapterTitle',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(fontSize: 16, color: Colors.black87),
+                          children: [
+                            TextSpan(
+                              text: '$bookId/$chapterId Chapter: ',
+                              style: TextStyle(
+                                color: Colors.teal,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: chapterTitle,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 8),
+                      Divider(height: 24),
                       Text(
-                        'Book: $bookName',
+                        'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.',
                         style: TextStyle(
-                          fontSize: 16,
-                          color: bookColor,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          height: 1.5,
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Contains ${controller.hadiths.length} hadith(s)',
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
 
-            // List of hadiths
-            ...controller.hadiths.map((hadith) {
-              print("hadith: ${hadith}");
-              return _buildHadithCard(context, hadith, bookName, bookColor);
-            }).toList(),
-          ],
+              // List of hadiths
+              ...controller.hadiths.map((hadith) {
+                return _buildHadithCard(context, hadith, bookName, bookColor);
+              }).toList(),
+            ],
+          ),
         );
       }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showSearchDialog(context),
-        backgroundColor: bookColor,
-        child: Icon(Icons.search),
-        tooltip: 'Search in hadiths',
-      ),
     );
   }
 
@@ -188,21 +193,38 @@ class HadithPage extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 8),
       child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: [
             // Hadith header
             ListTile(
-              leading: CircleAvatar(
-                backgroundColor: bookColor,
-                child: Text(
-                  hadith.hadithId.toString().padLeft(2, '0'),
-                  style: TextStyle(color: Colors.white),
+              leading: Container(
+                width: 40,
+                height: 45,
+                //color: Colors.transparent,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/polygon.png'),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    hadith.bookName!.substring(0, 1).toUpperCase(),
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
+
+              //  CircleAvatar(
+              //   backgroundColor: bookColor,
+              //   child: Text(
+              //     hadith.hadithId.toString().padLeft(2, '0'),
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
               title: Text(
                 'Hadith No: ${hadith.hadithId ?? hadith.id.toString().padLeft(2, '0')}',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -320,76 +342,109 @@ class HadithPage extends StatelessWidget {
     );
   }
 
-  void _showChapterInfo(BuildContext context, String chapterTitle) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Chapter Information'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  chapterTitle,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  'This chapter contains a collection of authentic hadiths related to the given topic.',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Close'),
-              ),
-            ],
-          ),
-    );
-  }
-
   void _showHadithOptions(BuildContext context, HadithEntity hadith) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder:
           (context) => Container(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            height: MediaQuery.of(context).size.height * 0.65,
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 16, 4, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'More Option',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.grey),
+                        onPressed: () => Navigator.pop(context),
+                        tooltip: 'Close',
+                      ),
+                    ],
+                  ),
+                ),
+
                 ListTile(
-                  leading: Icon(Icons.bookmark_add),
-                  title: Text('Save to Collection'),
+                  leading: Icon(Icons.send_outlined),
+                  title: Text('Go To Main Hadith'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Get.toNamed('/');
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.bookmark_outline),
+                  title: Text('Add to Collection'),
                   onTap: () {
                     Navigator.pop(context);
                     _saveHadith(hadith);
                   },
                 ),
                 ListTile(
+                  leading: Icon(Icons.copy),
+                  title: Text('Bangla Copy'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _copyBangla(hadith);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.copy),
+                  title: Text('English Copy'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _copyEnglish(hadith);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.copy),
+                  title: Text('Arabic Copy'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _copyArabic(hadith);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.lock_outline),
+                  title: Text('Add Hifz'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _addHifz(hadith);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.note_add_outlined),
+                  title: Text('Add Note'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _addNote(hadith);
+                  },
+                ),
+                ListTile(
                   leading: Icon(Icons.share),
-                  title: Text('Share Hadith'),
+                  title: Text('Share'),
                   onTap: () {
                     Navigator.pop(context);
                     _shareHadith(hadith);
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.copy),
-                  title: Text('Copy Text'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _copyHadith(hadith);
-                  },
-                ),
-                ListTile(
                   leading: Icon(Icons.report_outlined),
-                  title: Text('Report Issue'),
+                  title: Text('Report'),
                   onTap: () {
                     Navigator.pop(context);
                     _reportIssue(hadith);
@@ -401,36 +456,6 @@ class HadithPage extends StatelessWidget {
     );
   }
 
-  void _showSearchDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Search in Hadiths'),
-            content: TextField(
-              decoration: InputDecoration(
-                hintText: 'Enter search term...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Search'),
-              ),
-            ],
-          ),
-    );
-  }
-
-  // Helper methods for hadith actions
   void _saveHadith(HadithEntity hadith) {
     Get.snackbar(
       'Saved',
@@ -491,6 +516,69 @@ class HadithPage extends StatelessWidget {
       snackPosition: SnackPosition.BOTTOM,
       margin: EdgeInsets.all(16),
       backgroundColor: Colors.orange.withOpacity(0.9),
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void _copyBangla(HadithEntity hadith) {
+    // Copy Bangla text to clipboard
+    Get.snackbar(
+      'Copied',
+      'Bangla text copied to clipboard',
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.grey.shade700.withOpacity(0.9),
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void _copyEnglish(HadithEntity hadith) {
+    // Copy English text to clipboard
+    Get.snackbar(
+      'Copied',
+      'English text copied to clipboard',
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.grey.shade700.withOpacity(0.9),
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void _copyArabic(HadithEntity hadith) {
+    // Copy Arabic text to clipboard
+    Get.snackbar(
+      'Copied',
+      'Arabic text copied to clipboard',
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.grey.shade700.withOpacity(0.9),
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void _addHifz(HadithEntity hadith) {
+    Get.snackbar(
+      'Hifz',
+      'Hadith added to Hifz list',
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.green.withOpacity(0.9),
+      colorText: Colors.white,
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  void _addNote(HadithEntity hadith) {
+    Get.snackbar(
+      'Note',
+      'Note added for this hadith',
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.blue.withOpacity(0.9),
       colorText: Colors.white,
       duration: Duration(seconds: 2),
     );

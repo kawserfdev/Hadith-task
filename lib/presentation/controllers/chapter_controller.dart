@@ -22,21 +22,14 @@ class ChapterController extends GetxController {
     ever(selectedBookId, (_) => fetchChapters());
   }
 
-  void setBookId(int bookId) async {
-    if (bookId <= 0) {
-      return;
-    }
-    
-    selectedBookId.value = bookId;
-
-    if (repository is HadithRepositoryImpl) {
-      try {
-        await (repository as HadithRepositoryImpl).debugChapters(bookId);
-      } catch (e) {
-        print(' Error debugging chapters: $e');
+    void setBookId(int bookId) async {
+      if (bookId <= 0) {
+        return;
       }
+      
+      selectedBookId.value = bookId;
+
     }
-  }
 
   Future<void> fetchChapters() async {
     if (selectedBookId.value <= 0) {
@@ -151,90 +144,11 @@ class ChapterController extends GetxController {
     await fetchChapters();
   }
   
-  Future<void> verifyChaptersTable() async {
-    try {
-      if (repository is HadithRepositoryImpl) {
-        final repo = repository as HadithRepositoryImpl;
-        await repo.verifyChaptersTable();
-      } else {
-        print('cannot verify chapters table');
-      }
-    } catch (e) {
-      print('Error verifying chapters table: $e');
-    }
-  }
   
   bool get isDatabaseAvailable {
     if (repository is! HadithRepositoryImpl) return false;
     return (repository as HadithRepositoryImpl).database != null;
   }
   
-  Future<void> exploreDatabaseStructure() async {
-    try {
-      if (repository is HadithRepositoryImpl) {
-        final repo = repository as HadithRepositoryImpl;
-        await repo.exploreAllTables();
-      } else {
-        print('cannot explore database structure');
-      }
-    } catch (e) {
-      print(' Error exploring database structure: $e');
-    }
-  }
 }
 
-
-
-
-
-// import 'package:get/get.dart';
-// import 'package:hadith/domain/entities/chapter_entity.dart';
-// import 'package:hadith/domain/repositories/hadith_repository.dart';
-
-// class ChapterController extends GetxController {
-//   final HadithRepository repository;
-
-//   ChapterController({required this.repository});
-
-//   final RxList<ChapterEntity> chapters = <ChapterEntity>[].obs;
-//   final RxBool isLoading = false.obs;
-//   final RxInt selectedBookId = 0.obs;
-//   final RxString errorMessage = ''.obs;
-
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     ever(selectedBookId, (_) => fetchChapters());
-//   }
-
-//   void setBookId(int bookId) {
-//     if (bookId <= 0) return;
-//     selectedBookId.value = bookId;
-//   }
-
-//   Future<void> fetchChapters() async {
-//     if (selectedBookId.value <= 0) return;
-
-//     try {
-//       isLoading(true);
-//       errorMessage('');
-      
-//       final bookExists = await repository.bookExists(selectedBookId.value);
-//       if (!bookExists) {
-//         errorMessage('Book not found');
-//         chapters.clear();
-//         return;
-//       }
-      
-//       chapters.value = await repository.getChaptersByBookId(selectedBookId.value);
-//     } catch (e) {
-//       errorMessage('Failed to load chapters');
-//     } finally {
-//       isLoading(false);
-//     }
-//   }
-  
-//   Future<void> refreshChapters() async {
-//     await fetchChapters();
-//   }
-// }

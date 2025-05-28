@@ -33,11 +33,10 @@ class BookEntity {
       abvrCode: data['abvr_code'] as String? ?? '',
       bookName: data['book_name'] as String? ?? '',
       bookDescr: data['book_descr'] as String? ?? '',
-      colorCode: data['color_code']?.toString() ?? '',  // Convert to String
+      colorCode: data['color_code']?.toString() ?? '', 
     );
   }
   
-  // Helper method to convert hex color to Color
   Color get color {
     try {
       if (colorCode == null || colorCode!.isEmpty) return Colors.teal;
@@ -45,7 +44,7 @@ class BookEntity {
       
       return Color(int.parse('FF${colorCode!.substring(1)}', radix: 16));
     } catch (e) {
-      return Colors.teal; // Default color
+      return Colors.teal;
     }
   }
 }

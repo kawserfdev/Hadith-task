@@ -9,9 +9,9 @@ class HadithEntity {
   final String? hadithKey;
   final int? hadithId;
   final String? narrator;
-  final String? bn;           // Bengali translation?
-  final String? ar;           // Arabic text
-  final String? arDiacless;   // Arabic without diacritics
+  final String? bn;          
+  final String? ar;         
+  final String? arDiacless;  
   final String? note;
   final int? gradeId;
   final String? grade;
@@ -64,7 +64,7 @@ class Hadiths extends Table {
   IntColumn get chapterId => integer().named('chapter_id')();
   IntColumn get sectionId => integer().named('section_id').nullable()();
   TextColumn get hadithKey => text().named('hadith_key').nullable()();
-  IntColumn get hadithId => integer().named('hadith_id').nullable()();  // Changed to IntColumn
+  IntColumn get hadithId => integer().named('hadith_id').nullable()(); 
   TextColumn get narrator => text().nullable()();
   TextColumn get bn => text().nullable()();
   TextColumn get ar => text().nullable()();

@@ -2,12 +2,12 @@ import 'package:drift/drift.dart';
 
 class ChapterEntity {
   final int id;
-  final int chapterId;  // This was missing before
+  final int chapterId;  
   final int bookId;
   final String? title;
-  final int? number;    // New field
-  final String? hadisRange;  // New field
-  final String? bookName;    // New field
+  final int? number;    
+  final String? hadisRange; 
+  final String? bookName;   
   
   ChapterEntity({
     required this.id,
