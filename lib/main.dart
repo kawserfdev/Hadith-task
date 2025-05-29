@@ -34,13 +34,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      
       title: 'Al Hadith App',
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primaryColor: const Color(0xFF1AA483),
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
           elevation: 0,
-          color: Colors.teal,
+          color: const Color(0xFF1AA483),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),

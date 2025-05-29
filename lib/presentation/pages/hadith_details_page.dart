@@ -42,7 +42,6 @@ class HadithPage extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -66,30 +65,20 @@ class HadithPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.search_off, size: 64, color: Colors.grey),
+                Icon(Icons.search_off, size: 64, color: Colors.white),
                 SizedBox(height: 16),
                 Text(
                   'No hadiths available',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[700],
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Try refreshing or selecting another chapter',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-                SizedBox(height: 24),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.refresh),
-                  label: Text('Refresh'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: bookColor,
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  ),
-                  onPressed: () => controller.fetchHadiths(),
+                  'No hadiths found for $chapterId chapter.',
+                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
