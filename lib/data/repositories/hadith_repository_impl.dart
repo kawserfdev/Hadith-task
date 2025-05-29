@@ -2,7 +2,7 @@ import 'package:hadith/data/datasources/local/drift/database.dart';
 import 'package:hadith/domain/entities/book_entity.dart';
 import 'package:hadith/domain/entities/chapter_entity.dart';
 import 'package:hadith/domain/entities/hadith_entity.dart';
-import 'package:hadith/domain/repositories/hadith_repository.dart';
+import 'package:hadith/domain/hadith_repository.dart';
 
 class HadithRepositoryImpl implements HadithRepository {
   final AppDatabase? database;

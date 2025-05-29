@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hadith/domain/entities/hadith_entity.dart';
-import 'package:hadith/domain/repositories/hadith_repository.dart';
+import 'package:hadith/domain/hadith_repository.dart';
 
 class HadithController extends GetxController {
   final HadithRepository repository;

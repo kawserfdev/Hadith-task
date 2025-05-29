@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hadith/domain/entities/chapter_entity.dart';
-import 'package:hadith/domain/repositories/hadith_repository.dart';
-import 'package:hadith/domain/repositories/hadith_repository_impl.dart';
+import 'package:hadith/domain/hadith_repository.dart';
+import 'package:hadith/data/repositories/hadith_repository_impl.dart';
 import 'package:flutter/material.dart';
 
 class ChapterController extends GetxController {
