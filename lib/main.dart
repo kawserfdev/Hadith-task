@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hadith/core/themes/theme.dart';
 import 'package:hadith/data/datasources/local/drift/database.dart';
 import 'package:hadith/domain/repositories/empty_hadith_repository.dart';
 import 'package:hadith/domain/repositories/hadith_repository.dart';
@@ -34,14 +35,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      
       title: 'Al Hadith App',
       theme: ThemeData(
-        primaryColor: const Color(0xFF1AA483),
+        listTileTheme: ListTileThemeData(iconColor: AppColors.primary),
+        scaffoldBackgroundColor: AppColors.primary,
+        primaryColor: AppColors.primary,
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
           elevation: 0,
-          color: const Color(0xFF1AA483),
+          color: AppColors.primary,
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),

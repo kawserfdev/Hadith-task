@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hadith/core/themes/theme.dart';
 import 'package:hadith/presentation/controllers/book_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,11 +9,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF4F4F4),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-          title: Text(
-          'Hadith Collections',
-        ),
+        title: Text('Hadith Collections'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -57,7 +57,6 @@ class HomePage extends StatelessWidget {
                         onPressed: () => controller.fetchBooks(),
                         child: Text('Retry'),
                       ),
-                      
                     ],
                   ),
                 );
@@ -67,7 +66,7 @@ class HomePage extends StatelessWidget {
                 itemCount: controller.books.length,
                 itemBuilder: (context, index) {
                   final book = controller.books[index];
-                  Color bookColor = Colors.teal; // Default
+                  Color bookColor = AppColors.primary; // Default
                   if (book.colorCode != null && book.colorCode!.isNotEmpty) {
                     try {
                       if (book.colorCode!.startsWith('#')) {
@@ -83,7 +82,7 @@ class HomePage extends StatelessWidget {
                   }
                   return Card(
                     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    elevation: 3,
+                    elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -112,7 +111,10 @@ class HomePage extends StatelessWidget {
                       ),
                       trailing: Icon(Icons.arrow_forward_ios_rounded, size: 18),
                       onTap: () {
-                      Get.toNamed('/chapters', arguments: {'bookId': book.id});
+                        Get.toNamed(
+                          '/chapters',
+                          arguments: {'bookId': book.id},
+                        );
                       },
                     ),
                   );

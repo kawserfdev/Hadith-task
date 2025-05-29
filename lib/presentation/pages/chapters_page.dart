@@ -26,6 +26,7 @@ class ChaptersPage extends StatelessWidget {
     controller.setBookId(bookId);
 
     return Scaffold(
+      backgroundColor: Color(0xFFF4F4F4),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.white),
@@ -63,7 +64,7 @@ class ChaptersPage extends StatelessWidget {
 
             return Card(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              elevation: 2,
+              elevation: 1,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
