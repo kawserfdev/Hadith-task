@@ -264,7 +264,7 @@ class HadithPage extends StatelessWidget {
                 textAlign: TextAlign.right,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
-                  fontFamily: 'Arabic',
+                  fontFamily: 'me_quran Regular',
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
                 ),
